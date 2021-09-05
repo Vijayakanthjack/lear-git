@@ -1,0 +1,163 @@
+
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <script src='https://8x8.vc/external_api.js' async></script>
+        <style>html, body, #jaas-container { height: 100%; margin: 0; }</style>
+        <script type="text/javascript">
+var apiObj = null;
+
+function BindEvent(){
+    
+    $("#btnHangup").on('click', function () {
+        apiObj.executeCommand('hangup');
+    });
+    $("#btnCustomMic").on('click', function () {
+        apiObj.executeCommand('toggleAudio');
+    });
+    $("#btnCustomCamera").on('click', function () {
+        apiObj.executeCommand('toggleVideo');
+    });
+    $("#btnCustomTileView").on('click', function () {
+        apiObj.executeCommand('toggleTileView');
+    });
+    $("#btnScreenShareCustom").on('click', function () {
+        apiObj.executeCommand('toggleShareScreen');
+    });
+}
+
+          window.onload = () => {
+            const domain = "8x8.vc";
+
+            const options = {
+              roomName: "vpaas-magic-cookie-42d22ece486642bc99184ffbe1010e24/71b639",
+              parentNode: document.querySelector('#jaas-container'),
+ userInfo: {
+            //displayName: 'vpaas-magic-cookie-42d22ece486642bc99184ffbe1010e24/50ebfc'
+        },
+
+
+
+        configOverwrite:{
+            doNotStoreRoom: false,
+            startVideoMuted: 0,
+            startWithVideoMuted: true,
+            startWithAudioMuted: true,
+            enableWelcomePage: false,
+            prejoinPageEnabled: true,
+            disableRemoteMute: true,
+
+            remoteVideoMenu: {
+                disableKick: false,
+            },
+        },
+      interfaceConfigOverwrite: {
+            filmStripOnly: false,
+           // VIDEO_LAYOUT_FIT:'both',
+            DEFAULT_BACKGROUND: '#474747',
+            SHOW_JITSI_WATERMARK: true,
+            VERTICAL_FLIMSTRIP:false,
+            SHOW_WATERMARK_FOR_GUESTS: true,
+            //POLICY_LOGO:null,
+            //DEFAULT_REMOTE_DISPLAY_NAME: 'New User',
+            //TOOLBAR_BUTTONS: [],
+           TOOLBAR_BUTTONS: ['microphone', 'camera', 'mute-everyone', 'desktop', 'fullscreen', 'fodeviceselection', 'hangup', 'chat','sharevideo', 'raisehand','tileview','videobackgroundblur',]
+        },
+
+
+
+              jwt: "eyJhbGciOiJSUzI1NiIsImtpZCI6InZwYWFzLW1hZ2ljLWNvb2tpZS00MmQyMmVjZTQ4NjY0MmJjOTkxODRmZmJlMTAxMGUyNC85MTM3YTAiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiJqaXRzaSIsImNvbnRleHQiOnsidXNlciI6eyJpZCI6IjBmOGI3NzYwLWMxN2YtNGExMi1iMTM0LWM2YWMzNzE2NzE0NCIsIm5hbWUiOiJNZWV0aW5nMiIsImF2YXRhciI6Imh0dHBzOi8vbGluay50by91c2VyL2F2YXRhci9waWN0dXJlIiwiZW1haWwiOiJtZWVnaW5nMDJAY29tcGFueS5jb20iLCJtb2RlcmF0b3IiOiJ0cnVlIn0sImZlYXR1cmVzIjp7ImxpdmVzdHJlYW1pbmciOiJ0cnVlIiwicmVjb3JkaW5nIjoidHJ1ZSJ9fSwiZXhwIjoxNjk2Mjg0MDUyLCJpc3MiOiJjaGF0IiwibmJmIjoxNTk2MTk3NjUyLCJyb29tIjoiKiIsInN1YiI6InZwYWFzLW1hZ2ljLWNvb2tpZS00MmQyMmVjZTQ4NjY0MmJjOTkxODRmZmJlMTAxMGUyNCJ9.WnsV1Jt2R96r0nGehY7Kcp9NXPUWoMdkLdMjekplawylMLP7rBISfse4Hz5-ttyiJ1mEOM9V0O9LWmLgO2lev0cU9cKu8m-hektvZOnkpXd1WK1qxKUXxCjokRdCOqk6tBJfA6dhcmJfyxmszX4x3q8kMB4ePJsSUCm0a6hYJCdgNDluy9kL73Z0lxDoi6IL7eZFBPiywCL3oNhLfn2KST4n3XC-ZZsVDk3kjhgdbvQdfG3jBm6Zp2gI1wuBoe1u5I42dYm7rbGMPB45nUCM7h2ZWkheOwVFGgBb4OEzW7jB2WQn2cOftVbK9xoGChHB6TIJbzxpXnu16JlAwx6Y1w",
+        //     onload: function () {
+        //     alert('loaded');
+        //     $('#toolbox').show();
+        // }
+            };  
+            const api = new JitsiMeetExternalAPI('8x8.vc', options);
+
+    apiObj.addEventListeners({
+        readyToClose: function () {
+            //alert('going to close');
+            $('#jaas-container').empty();
+            $('#toolbox').hide();
+        },
+        audioMuteStatusChanged: function (data) {
+            if(data.muted)
+                $("#btnCustomMic").text('Unmute');
+            else
+                $("#btnCustomMic").text('Mute');
+        },
+        videoMuteStatusChanged: function (data) {
+            if(data.muted)
+                $("#btnCustomCamera").text('Start Cam');
+            else
+                $("#btnCustomCamera").text('Stop Cam');
+        },
+        tileViewChanged: function (data) {
+            
+        },
+        screenSharingStatusChanged: function (data) {
+            if(data.on)
+                $("#btnScreenShareCustom").text('Stop SS');
+            else
+                $("#btnScreenShareCustom").text('Start SS');
+        },
+        participantJoined: function(data){
+            console.log('participantJoined', data);
+        },
+        participantLeft: function(data){
+            console.log('participantLeft', data);
+        }
+
+    });
+
+      apiObj.executeCommand('subject', 'New Room 2');
+
+          }
+        </script>
+      </head>
+      <body>
+
+        <div id="jaas-container" /></div>
+<!--
+       <div id="toolbox" class="toolbox" style="">
+<div class="row-flex">
+<div class="col-left">
+    
+     <button id="btnCustomMic" class="btn-icon" title="Mic"></button>
+
+    <button id="btnCustomCamera" class="btn-icon " title="Camera"></button>
+   
+
+    <button id="btnHangup" class="btn-icon" title="End Call"></button>
+
+</div>
+
+<div class="col-right">
+    
+    <button id="btnChat" class="btn-icon" title="Chat"></button>
+
+   
+    <button id="btnScreenShareCustom" class="btn-icon" title="Share Screen"></button>
+
+  
+    <button id="btnCustomTileView" class="btn-icon show_tile" title="Tile View"></button>
+
+   
+    <button id="raiseHandUpdated" class="btn-icon" title="Hand Raise"></button>
+
+ 
+    <button id="CustomParticipants" class="btn-icon" title="Custom Participants"></button>
+
+   
+    <button id="moreCustomActions" class="btn-icon" title="More Actions"></button>
+
+
+</div>
+
+</div>
+  </div>
+-->
+    </body>
+
+    </html>
+  
