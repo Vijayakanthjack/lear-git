@@ -1,0 +1,5 @@
+/usr/bin/bash: wq: command not found
+
+
+Hello world
+
