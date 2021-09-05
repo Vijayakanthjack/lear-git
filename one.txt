@@ -4,4 +4,4 @@
 Hello world
  From vijayakanth
 
-and Karayambadi
+and Karayambadi working in utf
